@@ -1,7 +1,9 @@
 import 'package:json_annotation/json_annotation.dart';
 
-import '../core/enums/subscription_status.dart';
+import '../core/converters/date_time_converter.dart';
+import '../core/converters/nullable_date_time_converter.dart';
 import '../core/converters/subscription_status_converter.dart';
+import '../core/enums/subscription_status.dart';
 import 'base_model.dart';
 
 part 'subscription_model.g.dart';
@@ -12,15 +14,18 @@ class SubscriptionModel extends BaseModel {
   final String id;
 
   @override
+  @DateTimeConverter()
   final DateTime createdAt;
 
   @override
+  @DateTimeConverter()
   final DateTime updatedAt;
 
   @override
   final bool isDeleted;
 
   @override
+  @NullableDateTimeConverter()
   final DateTime? deletedAt;
 
   @override
@@ -29,15 +34,18 @@ class SubscriptionModel extends BaseModel {
   /// User ID.
   final String userId;
 
+  /// Current subscription status.
   @SubscriptionStatusConverter()
   final SubscriptionStatus status;
 
   /// Purchase date.
+  @DateTimeConverter()
   final DateTime purchaseDate;
 
   /// Expiry date.
   ///
   /// Null for lifetime subscriptions.
+  @NullableDateTimeConverter()
   final DateTime? expiryDate;
 
   /// Google Play purchase token.
@@ -50,22 +58,29 @@ class SubscriptionModel extends BaseModel {
   final bool autoRenewing;
 
   /// Last verification with the billing server.
+  @NullableDateTimeConverter()
   final DateTime? lastVerifiedAt;
 
   const SubscriptionModel({
     required this.id,
+    @DateTimeConverter()
     required this.createdAt,
+    @DateTimeConverter()
     required this.updatedAt,
     this.isDeleted = false,
+    @NullableDateTimeConverter()
     this.deletedAt,
     this.version = 1,
     required this.userId,
     required this.status,
+    @DateTimeConverter()
     required this.purchaseDate,
+    @NullableDateTimeConverter()
     this.expiryDate,
     this.purchaseToken,
     this.productId,
     this.autoRenewing = false,
+    @NullableDateTimeConverter()
     this.lastVerifiedAt,
   });
 

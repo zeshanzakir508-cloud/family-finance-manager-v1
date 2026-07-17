@@ -24,6 +24,7 @@ class Formatters {
     int decimalDigits = 2,
   }) {
     final formatter = NumberFormat.currency(
+      locale: AppConstants.locale,
       symbol: AppConstants.currencySymbol,
       decimalDigits: decimalDigits,
     );
@@ -39,13 +40,18 @@ class Formatters {
     num value, {
     int decimalDigits = 2,
   }) {
-    final formatter = NumberFormat.decimalPattern();
+    final formatter = NumberFormat.decimalPattern(
+      AppConstants.locale,
+    );
 
     if (decimalDigits == 0) {
       return formatter.format(value.round());
     }
 
-    return value.toStringAsFixed(decimalDigits);
+    return NumberFormat.decimalPatternDigits(
+      locale: AppConstants.locale,
+      decimalDigits: decimalDigits,
+    ).format(value);
   }
 
   //--------------------------------------------------------------------------
@@ -65,9 +71,12 @@ class Formatters {
 
   static String date(
     DateTime date, {
-    String pattern = 'dd MMM yyyy',
+    String? pattern,
   }) {
-    return DateFormat(pattern).format(date);
+    return DateFormat(
+      pattern ?? AppConstants.dateFormat,
+      AppConstants.locale,
+    ).format(date);
   }
 
   //--------------------------------------------------------------------------
@@ -76,9 +85,12 @@ class Formatters {
 
   static String time(
     DateTime dateTime, {
-    String pattern = 'hh:mm a',
+    String? pattern,
   }) {
-    return DateFormat(pattern).format(dateTime);
+    return DateFormat(
+      pattern ?? AppConstants.timeFormat,
+      AppConstants.locale,
+    ).format(dateTime);
   }
 
   //--------------------------------------------------------------------------
@@ -87,9 +99,12 @@ class Formatters {
 
   static String dateTime(
     DateTime dateTime, {
-    String pattern = 'dd MMM yyyy • hh:mm a',
+    String? pattern,
   }) {
-    return DateFormat(pattern).format(dateTime);
+    return DateFormat(
+      pattern ?? AppConstants.dateTimeFormat,
+      AppConstants.locale,
+    ).format(dateTime);
   }
 
   //--------------------------------------------------------------------------
@@ -97,7 +112,10 @@ class Formatters {
   //--------------------------------------------------------------------------
 
   static String monthYear(DateTime date) {
-    return DateFormat('MMMM yyyy').format(date);
+    return DateFormat(
+      AppConstants.monthYearFormat,
+      AppConstants.locale,
+    ).format(date);
   }
 
   //--------------------------------------------------------------------------
@@ -105,7 +123,10 @@ class Formatters {
   //--------------------------------------------------------------------------
 
   static String shortDate(DateTime date) {
-    return DateFormat('dd/MM/yyyy').format(date);
+    return DateFormat(
+      AppConstants.shortDateFormat,
+      AppConstants.locale,
+    ).format(date);
   }
 
   //--------------------------------------------------------------------------
@@ -113,6 +134,9 @@ class Formatters {
   //--------------------------------------------------------------------------
 
   static String fileTimestamp(DateTime dateTime) {
-    return DateFormat('yyyyMMdd_HHmmss').format(dateTime);
+    return DateFormat(
+      AppConstants.fileTimestampFormat,
+      AppConstants.locale,
+    ).format(dateTime);
   }
 }

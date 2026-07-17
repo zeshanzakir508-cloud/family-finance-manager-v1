@@ -2,6 +2,8 @@ import 'package:json_annotation/json_annotation.dart';
 
 import '../core/converters/account_status_converter.dart';
 import '../core/converters/app_role_converter.dart';
+import '../core/converters/date_time_converter.dart';
+import '../core/converters/nullable_date_time_converter.dart';
 import '../core/converters/subscription_status_converter.dart';
 import '../core/enums/account_status.dart';
 import '../core/enums/app_role.dart';
@@ -16,15 +18,18 @@ class UserModel extends BaseModel {
   final String id;
 
   @override
+  @DateTimeConverter()
   final DateTime createdAt;
 
   @override
+  @DateTimeConverter()
   final DateTime updatedAt;
 
   @override
   final bool isDeleted;
 
   @override
+  @NullableDateTimeConverter()
   final DateTime? deletedAt;
 
   @override
@@ -49,15 +54,19 @@ class UserModel extends BaseModel {
   @SubscriptionStatusConverter()
   final SubscriptionStatus subscriptionStatus;
 
+  @NullableDateTimeConverter()
   final DateTime? premiumExpiry;
 
   final String languageCode;
 
   const UserModel({
     required this.id,
+    @DateTimeConverter()
     required this.createdAt,
+    @DateTimeConverter()
     required this.updatedAt,
     this.isDeleted = false,
+    @NullableDateTimeConverter()
     this.deletedAt,
     this.version = 1,
     required this.displayName,
@@ -68,6 +77,7 @@ class UserModel extends BaseModel {
     this.appRole = AppRole.user,
     this.accountStatus = AccountStatus.active,
     this.subscriptionStatus = SubscriptionStatus.free,
+    @NullableDateTimeConverter()
     this.premiumExpiry,
     this.languageCode = 'en',
   });

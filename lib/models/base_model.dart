@@ -1,35 +1,33 @@
 /// Base contract for all application models.
 ///
-/// Every model in the application should extend this class to ensure a
-/// consistent structure and API.
+/// Every model in the application must extend this class to ensure
+/// a consistent structure and API.
 ///
-/// Note:
+/// Notes:
 /// - This class is intentionally NOT annotated with @JsonSerializable.
-/// - Concrete models are responsible for implementing JSON serialization.
+/// - Concrete models are responsible for JSON serialization.
+/// - Every model should remain immutable.
 abstract class BaseModel {
-  /// Unique identifier of the document/object.
+  /// Unique identifier.
   String get id;
 
-  /// Date and time when this record was created.
+  /// Record creation timestamp.
   DateTime get createdAt;
 
-  /// Date and time when this record was last updated.
+  /// Last update timestamp.
   DateTime get updatedAt;
 
-  /// Soft delete flag.
-  ///
-  /// Records are never permanently deleted immediately. Instead,
-  /// they are marked as deleted and can be restored if required.
+  /// Indicates whether the record has been soft deleted.
   bool get isDeleted;
 
-  /// Date and time when the record was soft deleted.
+  /// Soft deletion timestamp.
   ///
   /// Null if the record has not been deleted.
   DateTime? get deletedAt;
 
   /// Model schema version.
   ///
-  /// Useful for future migrations when the data structure evolves.
+  /// Increment only when the stored data structure changes.
   int get version;
 
   /// Converts the model into a JSON-compatible map.
@@ -37,7 +35,7 @@ abstract class BaseModel {
 
   /// Converts the model into a Firestore-compatible map.
   ///
-  /// Currently this can be identical to [toJson()], but keeping it separate
-  /// allows future customization (e.g. Firestore Timestamps).
-  Map<String, dynamic> toFirestore();
+  /// Currently identical to [toJson()], but kept separate to allow
+  /// future Firestore-specific customization without affecting JSON.
+  Map<String, dynamic> toFirestore() => toJson();
 }

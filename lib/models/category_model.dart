@@ -1,6 +1,8 @@
 import 'package:json_annotation/json_annotation.dart';
 
 import '../core/converters/category_type_converter.dart';
+import '../core/converters/date_time_converter.dart';
+import '../core/converters/nullable_date_time_converter.dart';
 import '../core/enums/category_type.dart';
 import 'base_model.dart';
 
@@ -12,15 +14,18 @@ class CategoryModel extends BaseModel {
   final String id;
 
   @override
+  @DateTimeConverter()
   final DateTime createdAt;
 
   @override
+  @DateTimeConverter()
   final DateTime updatedAt;
 
   @override
   final bool isDeleted;
 
   @override
+  @NullableDateTimeConverter()
   final DateTime? deletedAt;
 
   @override
@@ -32,7 +37,7 @@ class CategoryModel extends BaseModel {
   /// Category name.
   final String name;
 
-  /// Income or expense.
+  /// Income or Expense.
   @CategoryTypeConverter()
   final CategoryType type;
 
@@ -50,9 +55,12 @@ class CategoryModel extends BaseModel {
 
   const CategoryModel({
     required this.id,
+    @DateTimeConverter()
     required this.createdAt,
+    @DateTimeConverter()
     required this.updatedAt,
     this.isDeleted = false,
+    @NullableDateTimeConverter()
     this.deletedAt,
     this.version = 1,
     required this.familyId,

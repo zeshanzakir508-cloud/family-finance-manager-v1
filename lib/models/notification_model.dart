@@ -1,6 +1,8 @@
 import 'package:json_annotation/json_annotation.dart';
 
+import '../core/converters/date_time_converter.dart';
 import '../core/converters/notification_type_converter.dart';
+import '../core/converters/nullable_date_time_converter.dart';
 import '../core/enums/notification_type.dart';
 import 'base_model.dart';
 
@@ -12,15 +14,18 @@ class NotificationModel extends BaseModel {
   final String id;
 
   @override
+  @DateTimeConverter()
   final DateTime createdAt;
 
   @override
+  @DateTimeConverter()
   final DateTime updatedAt;
 
   @override
   final bool isDeleted;
 
   @override
+  @NullableDateTimeConverter()
   final DateTime? deletedAt;
 
   @override
@@ -32,6 +37,7 @@ class NotificationModel extends BaseModel {
   /// Optional family ID.
   final String? familyId;
 
+  /// Notification type.
   @NotificationTypeConverter()
   final NotificationType type;
 
@@ -51,13 +57,17 @@ class NotificationModel extends BaseModel {
   final bool isRead;
 
   /// Read timestamp.
+  @NullableDateTimeConverter()
   final DateTime? readAt;
 
   const NotificationModel({
     required this.id,
+    @DateTimeConverter()
     required this.createdAt,
+    @DateTimeConverter()
     required this.updatedAt,
     this.isDeleted = false,
+    @NullableDateTimeConverter()
     this.deletedAt,
     this.version = 1,
     required this.userId,
@@ -68,6 +78,7 @@ class NotificationModel extends BaseModel {
     this.route,
     this.referenceId,
     this.isRead = false,
+    @NullableDateTimeConverter()
     this.readAt,
   });
 

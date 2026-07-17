@@ -1,20 +1,25 @@
-/// ============================================================================
-/// Family Finance Manager
-/// App Constants
-/// ----------------------------------------------------------------------------
-/// Contains application-wide constant values.
-/// Do NOT store colors, strings, or asset paths here.
-/// ============================================================================
-
 class AppConstants {
   AppConstants._();
 
   //--------------------------------------------------------------------------
-  // App Information
+  // App
   //--------------------------------------------------------------------------
 
   static const String appName = 'Family Finance Manager';
-  static const String appVersion = '1.0.0';
+
+  //--------------------------------------------------------------------------
+  // Locale
+  //--------------------------------------------------------------------------
+
+  static const String defaultLanguageCode = 'en';
+  static const String defaultCountryCode = 'US';
+
+  //--------------------------------------------------------------------------
+  // Currency
+  //--------------------------------------------------------------------------
+
+  static const String defaultCurrencyCode = 'PKR';
+  static const String defaultCurrencySymbol = 'Rs';
 
   //--------------------------------------------------------------------------
   // Date & Time
@@ -23,13 +28,6 @@ class AppConstants {
   static const String defaultDateFormat = 'dd MMM yyyy';
   static const String defaultTimeFormat = 'hh:mm a';
   static const String defaultDateTimeFormat = 'dd MMM yyyy, hh:mm a';
-
-  //--------------------------------------------------------------------------
-  // Currency
-  //--------------------------------------------------------------------------
-
-  static const String defaultCurrency = 'PKR';
-  static const String currencySymbol = 'Rs';
 
   //--------------------------------------------------------------------------
   // Pagination
@@ -42,7 +40,11 @@ class AppConstants {
   //--------------------------------------------------------------------------
 
   static const int minPasswordLength = 8;
+  static const int maxPasswordLength = 128;
+
+  static const int minNameLength = 2;
   static const int maxNameLength = 50;
+
   static const int maxDescriptionLength = 500;
 
   //--------------------------------------------------------------------------
@@ -51,6 +53,16 @@ class AppConstants {
 
   static const Duration animationDuration =
       Duration(milliseconds: 300);
+
+  //--------------------------------------------------------------------------
+  // UI
+  //--------------------------------------------------------------------------
+
+  static const double borderRadius = 12.0;
+  static const double cardElevation = 2.0;
+
+  static const double horizontalPadding = 16.0;
+  static const double verticalPadding = 16.0;
 
   //--------------------------------------------------------------------------
   // Cache

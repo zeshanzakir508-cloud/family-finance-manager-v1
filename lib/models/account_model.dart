@@ -1,6 +1,8 @@
 import 'package:json_annotation/json_annotation.dart';
 
 import '../core/converters/account_type_converter.dart';
+import '../core/converters/date_time_converter.dart';
+import '../core/converters/nullable_date_time_converter.dart';
 import '../core/enums/account_type.dart';
 import 'base_model.dart';
 
@@ -12,15 +14,18 @@ class AccountModel extends BaseModel {
   final String id;
 
   @override
+  @DateTimeConverter()
   final DateTime createdAt;
 
   @override
+  @DateTimeConverter()
   final DateTime updatedAt;
 
   @override
   final bool isDeleted;
 
   @override
+  @NullableDateTimeConverter()
   final DateTime? deletedAt;
 
   @override
@@ -45,14 +50,17 @@ class AccountModel extends BaseModel {
   /// Currency code (ISO 4217).
   final String currencyCode;
 
-  /// Whether the account is visible.
+  /// Whether the account is active.
   final bool isActive;
 
   const AccountModel({
     required this.id,
+    @DateTimeConverter()
     required this.createdAt,
+    @DateTimeConverter()
     required this.updatedAt,
     this.isDeleted = false,
+    @NullableDateTimeConverter()
     this.deletedAt,
     this.version = 1,
     required this.familyId,

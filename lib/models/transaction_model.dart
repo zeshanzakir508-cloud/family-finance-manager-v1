@@ -1,5 +1,7 @@
 import 'package:json_annotation/json_annotation.dart';
 
+import '../core/converters/date_time_converter.dart';
+import '../core/converters/nullable_date_time_converter.dart';
 import '../core/converters/payment_method_converter.dart';
 import '../core/converters/transaction_type_converter.dart';
 import '../core/enums/payment_method.dart';
@@ -14,53 +16,73 @@ class TransactionModel extends BaseModel {
   final String id;
 
   @override
+  @DateTimeConverter()
   final DateTime createdAt;
 
   @override
+  @DateTimeConverter()
   final DateTime updatedAt;
 
   @override
   final bool isDeleted;
 
   @override
+  @NullableDateTimeConverter()
   final DateTime? deletedAt;
 
   @override
   final int version;
 
+  /// Family ID.
   final String familyId;
 
+  /// User who created the transaction.
   final String createdBy;
 
+  /// Transaction type.
   @TransactionTypeConverter()
   final TransactionType type;
 
+  /// Transaction amount.
   final double amount;
 
+  /// Source account.
   final String accountId;
 
+  /// Destination account (used for transfers).
   final String? transferAccountId;
 
+  /// Category ID.
   final String categoryId;
 
+  /// Payment method.
   @PaymentMethodConverter()
   final PaymentMethod paymentMethod;
 
+  /// Actual transaction date.
+  @DateTimeConverter()
   final DateTime transactionDate;
 
+  /// Person for whom the expense was made.
   final String? spentForUserId;
 
+  /// Optional title.
   final String? title;
 
+  /// Optional notes.
   final String? notes;
 
+  /// Receipt / invoice attachments.
   final List<String> attachmentUrls;
 
   const TransactionModel({
     required this.id,
+    @DateTimeConverter()
     required this.createdAt,
+    @DateTimeConverter()
     required this.updatedAt,
     this.isDeleted = false,
+    @NullableDateTimeConverter()
     this.deletedAt,
     this.version = 1,
     required this.familyId,
@@ -71,6 +93,7 @@ class TransactionModel extends BaseModel {
     this.transferAccountId,
     required this.categoryId,
     this.paymentMethod = PaymentMethod.other,
+    @DateTimeConverter()
     required this.transactionDate,
     this.spentForUserId,
     this.title,
@@ -121,8 +144,10 @@ class TransactionModel extends BaseModel {
           transferAccountId ?? this.transferAccountId,
       categoryId: categoryId ?? this.categoryId,
       paymentMethod: paymentMethod ?? this.paymentMethod,
-      transactionDate: transactionDate ?? this.transactionDate,
-      spentForUserId: spentForUserId ?? this.spentForUserId,
+      transactionDate:
+          transactionDate ?? this.transactionDate,
+      spentForUserId:
+          spentForUserId ?? this.spentForUserId,
       title: title ?? this.title,
       notes: notes ?? this.notes,
       attachmentUrls:

@@ -7,12 +7,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 /// Centralized wrapper around Cloud Firestore.
 ///
 /// Responsibilities:
-/// • Collection references
-/// • Document references
+/// • Collection & document references
 /// • CRUD operations
-/// • Batch writes
-/// • Transactions
 /// • Streams
+/// • Queries
+/// • Transactions
+/// • Batch writes
+/// • Utility helpers
 ///
 /// NOTE:
 /// Business logic belongs in repository implementations.
@@ -25,49 +26,66 @@ class FirestoreService {
 
   final FirebaseFirestore _firestore;
 
-  /// Returns a collection reference.
-  CollectionReference<Map<String, dynamic>> collection(
-    String path,
-  ) {
+  FirebaseFirestore get instance => _firestore;
+
+  //==========================================================================
+  // References
+  //==========================================================================
+
+  CollectionReference<Map<String, dynamic>> collection(String path) {
     return _firestore.collection(path);
   }
 
-  /// Returns a document reference.
-  DocumentReference<Map<String, dynamic>> document(
-    String path,
-  ) {
+  DocumentReference<Map<String, dynamic>> document(String path) {
     return _firestore.doc(path);
   }
 
-  /// Reads a document.
+  CollectionReference<Map<String, dynamic>> collectionGroup(
+    String collectionId,
+  ) {
+    throw UnsupportedError(
+      'collectionGroup returns Query, use queryCollectionGroup().',
+    );
+  }
+
+  Query<Map<String, dynamic>> queryCollectionGroup(
+    String collectionId,
+  ) {
+    return _firestore.collectionGroup(collectionId);
+  }
+
+  //==========================================================================
+  // Reads
+  //==========================================================================
+
   Future<DocumentSnapshot<Map<String, dynamic>>> getDocument(
     String path,
   ) {
     return document(path).get();
   }
 
-  /// Watches a document.
-  Stream<DocumentSnapshot<Map<String, dynamic>>> watchDocument(
-    String path,
-  ) {
-    return document(path).snapshots();
-  }
-
-  /// Reads a collection.
   Future<QuerySnapshot<Map<String, dynamic>>> getCollection(
     String path,
   ) {
     return collection(path).get();
   }
 
-  /// Watches a collection.
+  Stream<DocumentSnapshot<Map<String, dynamic>>> watchDocument(
+    String path,
+  ) {
+    return document(path).snapshots();
+  }
+
   Stream<QuerySnapshot<Map<String, dynamic>>> watchCollection(
     String path,
   ) {
     return collection(path).snapshots();
   }
 
-  /// Creates or replaces a document.
+  //==========================================================================
+  // Writes
+  //==========================================================================
+
   Future<void> setDocument({
     required String path,
     required Map<String, dynamic> data,
@@ -79,7 +97,6 @@ class FirestoreService {
     );
   }
 
-  /// Updates a document.
   Future<void> updateDocument({
     required String path,
     required Map<String, dynamic> data,
@@ -87,39 +104,68 @@ class FirestoreService {
     return document(path).update(data);
   }
 
-  /// Deletes a document.
   Future<void> deleteDocument(
     String path,
   ) {
     return document(path).delete();
   }
 
-  /// Returns a Firestore batch.
-  WriteBatch batch() {
-    return _firestore.batch();
+  //==========================================================================
+  // Utilities
+  //==========================================================================
+
+  Future<bool> documentExists(
+    String path,
+  ) async {
+    final snapshot = await getDocument(path);
+    return snapshot.exists;
   }
 
-  /// Runs a Firestore transaction.
-  Future<T> runTransaction<T>(
-    TransactionHandler<T> handler,
-  ) {
-    return _firestore.runTransaction(handler);
-  }
-
-  /// Generates a new document ID.
   String generateId(
     String collectionPath,
   ) {
     return collection(collectionPath).doc().id;
   }
 
-  /// Returns the current server timestamp.
+  Timestamp now() {
+    return Timestamp.now();
+  }
+
   FieldValue serverTimestamp() {
     return FieldValue.serverTimestamp();
   }
 
-  /// Returns the current timestamp.
-  Timestamp now() {
-    return Timestamp.now();
+  //==========================================================================
+  // Batch
+  //==========================================================================
+
+  WriteBatch batch() {
+    return _firestore.batch();
+  }
+
+  Future<void> commitBatch(
+    WriteBatch batch,
+  ) {
+    return batch.commit();
+  }
+
+  //==========================================================================
+  // Transactions
+  //==========================================================================
+
+  Future<T> runTransaction<T>(
+    TransactionHandler<T> handler,
+  ) {
+    return _firestore.runTransaction(handler);
+  }
+
+  //==========================================================================
+  // Queries
+  //==========================================================================
+
+  Query<Map<String, dynamic>> query(
+    String collectionPath,
+  ) {
+    return collection(collectionPath);
   }
 }

@@ -1,7 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
 
-import '../models/user_model.dart';
-
 /// ============================================================================
 /// Family Finance Manager
 /// Auth Repository
@@ -17,10 +15,9 @@ import '../models/user_model.dart';
 /// • Authentication state
 ///
 /// NOTE:
-/// This is only the contract.
-/// Firebase implementation will be provided later.
+/// This repository is responsible ONLY for Firebase Authentication.
+/// User profile data stored in Firestore belongs to UserRepository.
 /// ============================================================================
-
 abstract class AuthRepository {
   /// Stream of Firebase authentication state changes.
   Stream<User?> authStateChanges();
@@ -46,29 +43,26 @@ abstract class AuthRepository {
   /// Signs out the current user.
   Future<void> signOut();
 
-  /// Permanently deletes the current authenticated account.
+  /// Permanently deletes the currently authenticated account.
   Future<void> deleteAccount();
 
-  /// Sends password reset email.
+  /// Sends a password reset email.
   Future<void> sendPasswordResetEmail({
     required String email,
   });
 
-  /// Sends email verification.
+  /// Sends an email verification to the current user.
   Future<void> sendEmailVerification();
 
-  /// Reloads the authenticated Firebase user.
+  /// Reloads the current Firebase user.
   Future<void> reloadUser();
 
-  /// Refreshes and returns the latest user model.
-  Future<UserModel?> getCurrentUserModel();
-
-  /// Updates user password.
+  /// Updates the current user's password.
   Future<void> updatePassword({
     required String newPassword,
   });
 
-  /// Updates user email.
+  /// Updates the current user's email.
   Future<void> updateEmail({
     required String newEmail,
   });

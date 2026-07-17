@@ -1,6 +1,8 @@
 import 'package:json_annotation/json_annotation.dart';
 
 import '../core/converters/activity_type_converter.dart';
+import '../core/converters/date_time_converter.dart';
+import '../core/converters/nullable_date_time_converter.dart';
 import '../core/enums/activity_type.dart';
 import 'base_model.dart';
 
@@ -12,15 +14,18 @@ class ActivityLogModel extends BaseModel {
   final String id;
 
   @override
+  @DateTimeConverter()
   final DateTime createdAt;
 
   @override
+  @DateTimeConverter()
   final DateTime updatedAt;
 
   @override
   final bool isDeleted;
 
   @override
+  @NullableDateTimeConverter()
   final DateTime? deletedAt;
 
   @override
@@ -32,6 +37,7 @@ class ActivityLogModel extends BaseModel {
   /// Optional family ID.
   final String? familyId;
 
+  /// Activity type.
   @ActivityTypeConverter()
   final ActivityType type;
 
@@ -49,9 +55,12 @@ class ActivityLogModel extends BaseModel {
 
   const ActivityLogModel({
     required this.id,
+    @DateTimeConverter()
     required this.createdAt,
+    @DateTimeConverter()
     required this.updatedAt,
     this.isDeleted = false,
+    @NullableDateTimeConverter()
     this.deletedAt,
     this.version = 1,
     required this.userId,

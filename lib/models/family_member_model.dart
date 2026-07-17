@@ -1,6 +1,8 @@
 import 'package:json_annotation/json_annotation.dart';
 
+import '../core/converters/date_time_converter.dart';
 import '../core/converters/family_role_converter.dart';
+import '../core/converters/nullable_date_time_converter.dart';
 import '../core/enums/family_role.dart';
 import 'base_model.dart';
 
@@ -12,15 +14,18 @@ class FamilyMemberModel extends BaseModel {
   final String id;
 
   @override
+  @DateTimeConverter()
   final DateTime createdAt;
 
   @override
+  @DateTimeConverter()
   final DateTime updatedAt;
 
   @override
   final bool isDeleted;
 
   @override
+  @NullableDateTimeConverter()
   final DateTime? deletedAt;
 
   @override
@@ -40,19 +45,24 @@ class FamilyMemberModel extends BaseModel {
   final bool isActive;
 
   /// Date and time when the member joined the family.
+  @DateTimeConverter()
   final DateTime joinedAt;
 
   const FamilyMemberModel({
     required this.id,
+    @DateTimeConverter()
     required this.createdAt,
+    @DateTimeConverter()
     required this.updatedAt,
     this.isDeleted = false,
+    @NullableDateTimeConverter()
     this.deletedAt,
     this.version = 1,
     required this.familyId,
     required this.userId,
     this.role = FamilyRole.member,
     this.isActive = true,
+    @DateTimeConverter()
     required this.joinedAt,
   });
 

@@ -32,10 +32,4 @@ abstract class BaseModel {
 
   /// Converts the model into a JSON-compatible map.
   Map<String, dynamic> toJson();
-
-  /// Converts the model into a Firestore-compatible map.
-  ///
-  /// Currently identical to [toJson()], but kept separate to allow
-  /// future Firestore-specific customization without affecting JSON.
-  Map<String, dynamic> toFirestore() => toJson();
 }

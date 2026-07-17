@@ -8,26 +8,36 @@ class AppConstants {
   static const String appName = 'Family Finance Manager';
 
   //--------------------------------------------------------------------------
-  // Locale
+  // Localization
   //--------------------------------------------------------------------------
 
+  static const String locale = 'en_PK';
+
   static const String defaultLanguageCode = 'en';
-  static const String defaultCountryCode = 'US';
+  static const String defaultCountryCode = 'PK';
 
   //--------------------------------------------------------------------------
   // Currency
   //--------------------------------------------------------------------------
 
-  static const String defaultCurrencyCode = 'PKR';
-  static const String defaultCurrencySymbol = 'Rs';
+  static const String currencyCode = 'PKR';
+  static const String currencySymbol = 'Rs';
 
   //--------------------------------------------------------------------------
-  // Date & Time
+  // Date & Time Formats
   //--------------------------------------------------------------------------
 
-  static const String defaultDateFormat = 'dd MMM yyyy';
-  static const String defaultTimeFormat = 'hh:mm a';
-  static const String defaultDateTimeFormat = 'dd MMM yyyy, hh:mm a';
+  static const String dateFormat = 'dd MMM yyyy';
+
+  static const String shortDateFormat = 'dd/MM/yyyy';
+
+  static const String timeFormat = 'hh:mm a';
+
+  static const String dateTimeFormat = 'dd MMM yyyy, hh:mm a';
+
+  static const String monthYearFormat = 'MMMM yyyy';
+
+  static const String fileTimestampFormat = 'yyyyMMdd_HHmmss';
 
   //--------------------------------------------------------------------------
   // Pagination

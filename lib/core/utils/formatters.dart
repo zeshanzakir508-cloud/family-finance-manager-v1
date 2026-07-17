@@ -1,5 +1,7 @@
 import 'package:intl/intl.dart';
 
+import '../constants/app_constants.dart';
+
 /// ============================================================================
 /// Family Finance Manager
 /// Formatters
@@ -19,11 +21,10 @@ class Formatters {
 
   static String currency(
     num value, {
-    String symbol = 'Rs.',
     int decimalDigits = 2,
   }) {
     final formatter = NumberFormat.currency(
-      symbol: symbol,
+      symbol: AppConstants.currencySymbol,
       decimalDigits: decimalDigits,
     );
 

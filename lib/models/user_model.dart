@@ -1,5 +1,8 @@
 import 'package:json_annotation/json_annotation.dart';
 
+import '../core/converters/account_status_converter.dart';
+import '../core/converters/app_role_converter.dart';
+import '../core/converters/subscription_status_converter.dart';
 import '../core/enums/account_status.dart';
 import '../core/enums/app_role.dart';
 import '../core/enums/subscription_status.dart';
@@ -28,27 +31,22 @@ class UserModel extends BaseModel {
   final int version;
 
   final String displayName;
+
   final String email;
+
   final bool emailVerified;
+
   final String? phoneNumber;
+
   final String? photoUrl;
 
-  @JsonKey(
-    fromJson: AppRoleExtension.fromValue,
-    toJson: _appRoleToJson,
-  )
+  @AppRoleConverter()
   final AppRole appRole;
 
-  @JsonKey(
-    fromJson: AccountStatusExtension.fromValue,
-    toJson: _accountStatusToJson,
-  )
+  @AccountStatusConverter()
   final AccountStatus accountStatus;
 
-  @JsonKey(
-    fromJson: SubscriptionStatusExtension.fromValue,
-    toJson: _subscriptionStatusToJson,
-  )
+  @SubscriptionStatusConverter()
   final SubscriptionStatus subscriptionStatus;
 
   final DateTime? premiumExpiry;
@@ -134,13 +132,4 @@ class UserModel extends BaseModel {
 
   @override
   int get hashCode => id.hashCode;
-
-  static String _appRoleToJson(AppRole role) => role.value;
-
-  static String _accountStatusToJson(AccountStatus status) => status.value;
-
-  static String _subscriptionStatusToJson(
-    SubscriptionStatus status,
-  ) =>
-      status.value;
 }

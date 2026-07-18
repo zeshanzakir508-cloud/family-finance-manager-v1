@@ -1,83 +1,81 @@
-// lib/domain/usecases/transaction/get_transaction_summary_usecase.dart
+// lib/domain/usecases/transaction/get_monthly_summary_usecase.dart
 
 import 'package:equatable/equatable.dart';
 
-import '../../entities/transaction_summary.dart';
+import '../../entities/monthly_summary.dart';
 import '../../repositories/transaction_repository.dart';
 import '../../exceptions/transaction_exceptions.dart';
 
-/// Parameters for [GetTransactionSummaryUseCase].
-class GetTransactionSummaryParams extends Equatable {
+/// Parameters for [GetMonthlySummaryUseCase].
+class GetMonthlySummaryParams extends Equatable {
   final String userId;
-  final DateTime startDate;
-  final DateTime endDate;
+  final int year;
+  final int month;
   final bool includeArchived;
 
-  const GetTransactionSummaryParams({
+  const GetMonthlySummaryParams({
     required this.userId,
-    required this.startDate,
-    required this.endDate,
+    required this.year,
+    required this.month,
     this.includeArchived = false,
   });
 
   @override
   List<Object?> get props => [
         userId,
-        startDate,
-        endDate,
+        year,
+        month,
         includeArchived,
       ];
 }
 
-/// Use case for getting a summary of transactions.
+/// Use case for getting a monthly summary of transactions.
 ///
 /// This use case handles retrieving aggregated transaction data for a user
-/// within a date range. The summary calculation is delegated to the repository
+/// for a specific month. The summary calculation is delegated to the repository
 /// for optimal performance and scalability.
-class GetTransactionSummaryUseCase {
+class GetMonthlySummaryUseCase {
   final TransactionRepository _repository;
 
-  const GetTransactionSummaryUseCase({
+  const GetMonthlySummaryUseCase({
     required TransactionRepository repository,
   }) : _repository = repository;
 
-  /// Executes the get transaction summary use case.
+  /// Executes the get monthly summary use case.
   ///
-  /// [params] contains the user ID, date range, and whether to include archived transactions.
-  /// Returns a [TransactionSummary] with aggregated data.
+  /// [params] contains the user ID, year, month, and whether to include archived transactions.
+  /// Returns a [MonthlySummary] with aggregated data for the month.
   /// Throws [TransactionException] if validation fails or retrieval fails.
-  Future<TransactionSummary> call(GetTransactionSummaryParams params) async {
+  Future<MonthlySummary> call(GetMonthlySummaryParams params) async {
     // Business rule: user ID must not be empty
     if (params.userId.trim().isEmpty) {
       throw const TransactionDataException('User ID cannot be empty.');
     }
 
-    // Business rule: start date must be before end date
-    if (params.startDate.isAfter(params.endDate)) {
+    // Business rule: year must be valid
+    if (params.year < 2000 || params.year > 2100) {
       throw const TransactionDataException(
-        'Start date must be before end date.',
+        'Year must be between 2000 and 2100.',
       );
     }
 
-    // Business rule: date range cannot exceed 1 year
-    // This is a business rule to prevent excessive data retrieval
-    final daysDifference = params.endDate.difference(params.startDate).inDays;
-    if (daysDifference > 365) {
+    // Business rule: month must be between 1 and 12
+    if (params.month < 1 || params.month > 12) {
       throw const TransactionDataException(
-        'Date range cannot exceed 365 days.',
+        'Month must be between 1 and 12.',
       );
     }
 
-    // Delegate to repository for summary calculation
+    // Delegate to repository for monthly summary calculation
     // The repository handles:
-    // 1. Querying transactions efficiently
+    // 1. Calculating daily breakdown
     // 2. Calculating income and expense totals
     // 3. Aggregating by category
     // 4. Returning a domain summary object
-    return _repository.getTransactionSummary(
+    return _repository.getMonthlySummary(
       params.userId.trim(),
-      params.startDate,
-      params.endDate,
+      params.year,
+      params.month,
       includeArchived: params.includeArchived,
     );
   }

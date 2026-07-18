@@ -7,7 +7,7 @@ import '../../../models/app_settings_model.dart';
 /// Request object used when creating application settings.
 /// ============================================================================
 class CreateSettingsRequest {
-  /// Application settings.
+  /// Application settings to create.
   final AppSettingsModel settings;
 
   const CreateSettingsRequest({

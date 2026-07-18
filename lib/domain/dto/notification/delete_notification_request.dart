@@ -1,8 +1,8 @@
-/// Request object for deleting a notification.
-class DeleteNotificationRequest {
-  final String notificationId;
+/// Request object for deleting all notifications of a user.
+class DeleteAllNotificationsRequest {
+  final String userId;
 
-  const DeleteNotificationRequest({
-    required this.notificationId,
+  const DeleteAllNotificationsRequest({
+    required this.userId,
   });
 }

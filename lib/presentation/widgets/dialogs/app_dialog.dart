@@ -57,6 +57,7 @@ class AppDialog extends StatelessWidget {
   final bool showCancelButton;
 
   /// Whether the dialog can be dismissed by tapping outside.
+  /// This is only exposed for helper methods that call showDialog().
   final bool barrierDismissible;
 
   /// Custom icon color override.

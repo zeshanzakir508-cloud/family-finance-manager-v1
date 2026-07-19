@@ -86,6 +86,9 @@ class AppTextField extends StatelessWidget {
   /// Callback when the field is tapped.
   final VoidCallback? onTap;
 
+  /// Callback when the user submits the field.
+  final void Function(String)? onFieldSubmitted;
+
   /// Validator function for the field.
   final String? Function(String?)? validator;
 
@@ -129,6 +132,7 @@ class AppTextField extends StatelessWidget {
     this.maxLength,
     this.onChanged,
     this.onTap,
+    this.onFieldSubmitted,
     this.validator,
     this.onSaved,
     this.variant = TextFieldVariant.outlined,
@@ -172,6 +176,7 @@ class AppTextField extends StatelessWidget {
       maxLength: maxLength,
       onChanged: onChanged,
       onTap: onTap,
+      onFieldSubmitted: onFieldSubmitted,
       validator: validator,
       onSaved: onSaved,
       inputFormatters: inputFormatters,

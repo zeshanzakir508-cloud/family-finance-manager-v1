@@ -2,31 +2,16 @@
 ///
 /// Used by [AppBarStyleBuilder] to determine colors, borders,
 /// elevation, and overall Material 3 styling.
-///
-/// Example:
-/// ```dart
-/// AppBarVariant.filled
-/// AppBarVariant.outlined
-/// ```
 enum AppBarVariant {
-  /// A standard filled app bar using the surface color.
-  ///
-  /// Suitable for most application screens.
+  /// Standard Material 3 app bar.
   filled,
 
-  /// An app bar with a border and transparent/surface background.
-  ///
-  /// Useful for settings, forms, and desktop layouts.
+  /// App bar with an outline border.
   outlined,
 
-  /// An app bar using a tonal container color.
-  ///
-  /// Matches Material 3 tonal surfaces.
+  /// App bar using a tonal container color.
   tonal,
 
-  /// A transparent app bar.
-  ///
-  /// Typically used with hero images, slivers,
-  /// onboarding pages, and immersive layouts.
+  /// Transparent app bar.
   transparent,
 }

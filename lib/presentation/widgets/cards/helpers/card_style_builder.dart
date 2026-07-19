@@ -1,36 +1,25 @@
+// lib/presentation/widgets/cards/helpers/card_style_builder.dart
+
 import 'package:flutter/material.dart';
 
-import '../enums/card_elevation.dart';
 import '../enums/card_variant.dart';
+import '../enums/card_elevation.dart';
 
-/// A lightweight style model for configuring an [AppCard].
-@immutable
-class CardStyle {
-  /// Background color of the card.
-  final Color backgroundColor;
-
-  /// Border displayed around the card.
-  final BorderSide? border;
-
-  /// Elevation of the card.
-  final double elevation;
-
-  /// Shape of the card.
-  final ShapeBorder shape;
-
-  /// Creates a new [CardStyle].
-  const CardStyle({
-    required this.backgroundColor,
-    required this.border,
-    required this.elevation,
-    required this.shape,
-  });
-}
-
-/// Builds a consistent [CardStyle] based on the current theme,
-/// card variant, and elevation.
+/// Builder class for creating consistent card styles.
+///
+/// This class constructs [CardStyle] configurations based on the provided
+/// parameters, providing a centralized source of truth for card styling.
+///
+/// Example:
+/// ```dart
+/// final style = CardStyleBuilder.build(
+///   context: context,
+///   variant: CardVariant.filled,
+///   elevation: CardElevation.low,
+/// );
+/// ```
 abstract final class CardStyleBuilder {
-  /// Returns the resolved style for an [AppCard].
+  /// Builds a [CardStyle] configuration with the given parameters.
   static CardStyle build({
     required BuildContext context,
     required CardVariant variant,
@@ -38,43 +27,82 @@ abstract final class CardStyleBuilder {
   }) {
     final colorScheme = Theme.of(context).colorScheme;
 
-    final border = switch (variant) {
-      CardVariant.outlined =>
-        BorderSide(color: colorScheme.outlineVariant),
-      _ => null,
-    };
+    Color backgroundColor;
+    double elevationValue;
+    BorderSide? border;
 
-    final backgroundColor = switch (variant) {
-      CardVariant.filled => colorScheme.surface,
-      CardVariant.outlined => colorScheme.surface,
-      CardVariant.elevated => colorScheme.surface,
-      CardVariant.tonal => colorScheme.secondaryContainer,
-    };
+    switch (variant) {
+      case CardVariant.filled:
+        backgroundColor = colorScheme.surface;
+        border = null;
+        break;
+      case CardVariant.outlined:
+        backgroundColor = colorScheme.surface;
+        border = BorderSide(
+          color: colorScheme.outlineVariant,
+          width: 1,
+        );
+        break;
+      case CardVariant.elevated:
+        backgroundColor = colorScheme.surface;
+        border = null;
+        break;
+      case CardVariant.tonal:
+        backgroundColor = colorScheme.secondaryContainer;
+        border = null;
+        break;
+    }
+
+    switch (elevation) {
+      case CardElevation.none:
+        elevationValue = 0;
+        break;
+      case CardElevation.low:
+        elevationValue = 1;
+        break;
+      case CardElevation.medium:
+        elevationValue = 2;
+        break;
+      case CardElevation.high:
+        elevationValue = 4;
+        break;
+    }
+
+    final shape = RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(16),
+      side: border ?? BorderSide.none,
+    );
 
     return CardStyle(
       backgroundColor: backgroundColor,
+      elevation: elevationValue,
+      shape: shape,
       border: border,
-      elevation: _resolveElevation(elevation),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(16),
-        side: border ?? BorderSide.none,
-      ),
     );
   }
+}
 
-  static double _resolveElevation(CardElevation elevation) {
-    switch (elevation) {
-      case CardElevation.none:
-        return 0;
-      case CardElevation.low:
-        return 1;
-      case CardElevation.medium:
-        return 3;
-      case CardElevation.high:
-        return 6;
-    }
-  }
+/// Style configuration for cards.
+///
+/// Contains all visual properties needed to style a card consistently.
+class CardStyle {
+  /// The background color of the card.
+  final Color backgroundColor;
 
-  // Prevent instantiation.
-  const CardStyleBuilder._();
+  /// The elevation (shadow depth) of the card.
+  final double elevation;
+
+  /// The shape (including border radius and border) of the card.
+  final ShapeBorder shape;
+
+  /// The border of the card, if any.
+  final BorderSide? border;
+
+  /// Creates a new [CardStyle].
+  const CardStyle({
+    required this.backgroundColor,
+    required this.elevation,
+    required this.shape,
+    this.border,
+  });
 }

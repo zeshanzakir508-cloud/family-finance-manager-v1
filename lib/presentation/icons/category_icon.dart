@@ -1,60 +1,121 @@
 // lib/presentation/icons/category_icon.dart
 
-/// Enum representing category icons.
+/// An enumeration of all icons used throughout the application.
+///
+/// This enum serves as an abstraction layer between the presentation logic
+/// and the underlying icon implementation (Material, Cupertino, etc.).
+/// It allows the app to switch icon packages without changing business logic.
+///
+/// Each entry represents a semantic icon that can be mapped to platform-specific
+/// [IconData] by a separate mapper.
+///
+/// Example:
+/// ```dart
+/// final icon = CategoryIcon.food;
+/// ```
 enum CategoryIcon {
-  /// Food and dining.
+  // Food & Dining
   food,
+  groceries,
+  dining,
+  coffee,
+  alcohol,
 
-  /// Transportation.
+  // Transportation
   transport,
+  car,
+  bike,
+  public,
+  parking,
+  toll,
+  fuel,
+  charging,
 
-  /// Shopping.
-  shopping,
-
-  /// Entertainment.
-  entertainment,
-
-  /// Healthcare.
-  healthcare,
-
-  /// Education.
-  education,
-
-  /// Housing.
+  // Housing & Utilities
   housing,
-
-  /// Utilities.
+  rent,
+  mortgage,
+  property,
+  maintenance,
+  repair,
+  cleaning,
+  garden,
   utilities,
+  phone,
+  internet,
+  tv,
+  bills,
 
-  /// Insurance.
+  // Healthcare
+  healthcare,
+  pharmacy,
+  doctor,
+  dentist,
+  vision,
+  therapy,
+
+  // Education
+  education,
+  books,
+  courses,
+  tuition,
+  workshop,
+
+  // Entertainment & Leisure
+  entertainment,
+  music,
+  gaming,
+  sports,
+  hobbies,
+  travel,
+  vacation,
+  hotel,
+  flights,
+
+  // Shopping
+  shopping,
+  clothing,
+  electronics,
+  furniture,
+  toys,
+
+  // Insurance & Financial
   insurance,
-
-  /// Salary.
-  salary,
-
-  /// Freelance.
-  freelance,
-
-  /// Investment.
+  savings,
   investment,
+  interest,
+  dividend,
+  loan,
+  debt,
+  tax,
+  fees,
+  interestPaid,
 
-  /// Gift.
+  // Income
+  income,
+  salary,
+  freelance,
+  rental,
   gift,
 
-  /// Other.
+  // Lifestyle
+  pet,
+  kids,
+  maternity,
+  elderly,
+
+  // Subscriptions & Services
+  subscription,
+  membership,
+  software,
+  hardware,
+  office,
+
+  // Charity & Donations
+  charity,
+  donation,
+
+  // Default
   other,
-}
-
-/// Extension methods for [CategoryIcon].
-extension CategoryIconExtension on CategoryIcon {
-  /// String representation used for storage and serialization.
-  String get value => name;
-
-  /// Creates a [CategoryIcon] from a stored string value.
-  static CategoryIcon fromValue(String value) {
-    return CategoryIcon.values.firstWhere(
-      (e) => e.name == value,
-      orElse: () => CategoryIcon.other,
-    );
-  }
+  uncategorized,
 }

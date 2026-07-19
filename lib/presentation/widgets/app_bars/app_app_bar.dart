@@ -1,44 +1,79 @@
+// lib/presentation/widgets/app_bars/app_app_bar.dart
+
 import 'package:flutter/material.dart';
 
-import 'enums/app_bar_size.dart';
 import 'enums/app_bar_variant.dart';
+import 'enums/app_bar_size.dart';
 import 'helpers/app_bar_style_builder.dart';
+import 'internal/app_bar_title.dart';
 
-/// A reusable Material 3 application app bar.
+/// A customizable app bar with consistent styling.
 ///
-/// [AppAppBar] wraps Flutter's [AppBar] while providing a consistent,
-/// centralized styling system through [AppBarStyleBuilder].
-///
-/// It supports:
-/// * Material 3 variants
-/// * Multiple sizes
-/// * Title & subtitle
-/// * Leading widget
-/// * Actions
-/// * Bottom widgets
-/// * Flexible space
-/// * Disabled and selected states
+/// This widget provides a standardized app bar that follows the
+/// application's design system with support for multiple variants, sizes,
+/// and states.
 ///
 /// Example:
-///
 /// ```dart
-/// Scaffold(
-///   appBar: const AppAppBar(
-///     title: 'Dashboard',
-///   ),
+/// AppAppBar(
+///   title: 'Family Finance',
+///   subtitle: 'Dashboard',
+///   variant: AppBarVariant.primary,
+///   actions: [
+///     IconButton(icon: Icon(Icons.search), onPressed: () {}),
+///   ],
 /// )
 /// ```
-class AppAppBar extends StatelessWidget
-    implements PreferredSizeWidget {
-  /// Creates an application app bar.
+class AppAppBar extends StatelessWidget {
+  /// The main title text.
+  final String title;
+
+  /// Optional subtitle text displayed below the title.
+  final String? subtitle;
+
+  /// Leading widget (e.g., back button, menu) displayed before the title.
+  final Widget? leading;
+
+  /// Action widgets displayed after the title.
+  final List<Widget>? actions;
+
+  /// Whether the title is centered.
+  final bool? centerTitle;
+
+  /// Whether to automatically imply a leading widget.
+  final bool automaticallyImplyLeading;
+
+  /// The visual variant of the app bar.
+  final AppBarVariant variant;
+
+  /// The size of the app bar.
+  final AppBarSize size;
+
+  /// Whether the app bar is selected.
+  final bool selected;
+
+  /// Whether the app bar is disabled.
+  final bool disabled;
+
+  /// Custom background color override.
+  final Color? backgroundColor;
+
+  /// Custom foreground color override.
+  final Color? foregroundColor;
+
+  /// Custom elevation override.
+  final double? elevation;
+
+  /// Custom shape override.
+  final ShapeBorder? shape;
+
+  /// Creates a new [AppAppBar].
   const AppAppBar({
     super.key,
     required this.title,
     this.subtitle,
     this.leading,
     this.actions,
-    this.bottom,
-    this.flexibleSpace,
     this.centerTitle,
     this.automaticallyImplyLeading = true,
     this.variant = AppBarVariant.primary,
@@ -49,65 +84,7 @@ class AppAppBar extends StatelessWidget
     this.foregroundColor,
     this.elevation,
     this.shape,
-    this.toolbarHeight,
   });
-
-  /// Primary title.
-  final String title;
-
-  /// Optional subtitle.
-  final String? subtitle;
-
-  /// Leading widget.
-  final Widget? leading;
-
-  /// Action widgets.
-  final List<Widget>? actions;
-
-  /// Bottom widget.
-  final PreferredSizeWidget? bottom;
-
-  /// Flexible space.
-  final Widget? flexibleSpace;
-
-  /// Centers the title.
-  final bool? centerTitle;
-
-  /// Whether Flutter should automatically provide a back button.
-  final bool automaticallyImplyLeading;
-
-  /// Visual variant.
-  final AppBarVariant variant;
-
-  /// App bar size.
-  final AppBarSize size;
-
-  /// Selected state.
-  final bool selected;
-
-  /// Disabled state.
-  final bool disabled;
-
-  /// Override background color.
-  final Color? backgroundColor;
-
-  /// Override foreground color.
-  final Color? foregroundColor;
-
-  /// Override elevation.
-  final double? elevation;
-
-  /// Override shape.
-  final ShapeBorder? shape;
-
-  /// Override toolbar height.
-  final double? toolbarHeight;
-
-  @override
-  Size get preferredSize => Size.fromHeight(
-        (toolbarHeight ?? size.toolbarHeight) +
-            (bottom?.preferredSize.height ?? 0),
-      );
 
   @override
   Widget build(BuildContext context) {
@@ -122,136 +99,45 @@ class AppAppBar extends StatelessWidget
       disabled: disabled,
     );
 
-    // Build implementation continues in Part 2.
-    throw UnimplementedError();
-  }
-}
-return AppBar(
- title: _AppBarTitle(
-  title: title,
-  subtitle: subtitle,
-  titleStyle: style.titleStyle,
-  subtitleStyle: style.subtitleStyle,
-),
-      : Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              title,
-              style: style.titleStyle,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-            ),
-            Text(
-              subtitle!,
-              style: style.subtitleStyle,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-            ),
-          ],
-        ),
+    final bgColor = backgroundColor ?? colors.background;
+    final fgColor = foregroundColor ?? colors.foreground;
+    final effectiveElevation = elevation ?? style.elevation;
+    final effectiveShape = shape ?? style.shape;
 
-  leading: leading,
+    final effectiveCenterTitle = centerTitle ?? (size != AppBarSize.large);
 
-  actions: actions
-      ?.map(
-        (action) => Padding(
-          padding: EdgeInsets.only(
-            right: style.actionsSpacing,
-          ),
-          child: IconTheme(
-            data: IconThemeData(
-              size: style.iconSize,
-              color: foregroundColor ?? colors.foreground,
-            ),
-            child: action,
-          ),
-        ),
-      )
-      .toList(),
+    final titleWidget = AppBarTitle(
+      title: title,
+      subtitle: subtitle,
+      titleStyle: style.titleStyle,
+      subtitleStyle: style.subtitleStyle,
+      titleColor: fgColor,
+      subtitleColor: fgColor.withOpacity(0.7),
+      padding: style.titlePadding,
+      spacing: 2,
+    );
 
-  bottom: bottom,
-
-  flexibleSpace: flexibleSpace,
-
-  centerTitle: centerTitle,
-
-  automaticallyImplyLeading: automaticallyImplyLeading,
-
-  toolbarHeight: toolbarHeight ?? style.toolbarHeight,
-
-  leadingWidth: style.leadingWidth,
-
-  titleSpacing: style.titleSpacing,
-
-  backgroundColor: backgroundColor ?? colors.background,
-
-  foregroundColor: foregroundColor ?? colors.foreground,
-
-  elevation: elevation ?? style.elevation,
-
-  shape: shape ?? style.shape,
-
-  iconTheme: IconThemeData(
-    size: style.iconSize,
-    color: foregroundColor ?? colors.foreground,
-  ),
-
-  actionsIconTheme: IconThemeData(
-    size: style.iconSize,
-    color: foregroundColor ?? colors.foreground,
-  ),
-
-  titleTextStyle: style.titleStyle,
-
-  toolbarTextStyle: style.subtitleStyle,
-
-  scrolledUnderElevation: elevation ?? style.elevation,
-);
-/// Internal title widget used by [AppAppBar].
-class _AppBarTitle extends StatelessWidget {
-  const _AppBarTitle({
-    required this.title,
-    this.subtitle,
-    required this.titleStyle,
-    required this.subtitleStyle,
-  });
-
-  final String title;
-  final String? subtitle;
-
-  final TextStyle titleStyle;
-  final TextStyle subtitleStyle;
-
-  @override
-  Widget build(BuildContext context) {
-    if (subtitle == null || subtitle!.isEmpty) {
-      return Text(
-        title,
-        style: titleStyle,
-        maxLines: 1,
-        overflow: TextOverflow.ellipsis,
-      );
-    }
-
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          title,
-          style: titleStyle,
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-        ),
-        Text(
-          subtitle!,
-          style: subtitleStyle,
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-        ),
-      ],
+    return AppBar(
+      title: titleWidget,
+      leading: leading,
+      actions: actions,
+      centerTitle: effectiveCenterTitle,
+      automaticallyImplyLeading: automaticallyImplyLeading,
+      backgroundColor: bgColor,
+      foregroundColor: fgColor,
+      elevation: effectiveElevation,
+      shape: effectiveShape,
+      toolbarHeight: style.toolbarHeight,
+      leadingWidth: style.leadingWidth,
+      titleSpacing: style.titleSpacing,
+      iconTheme: IconThemeData(
+        color: fgColor,
+        size: style.iconSize,
+      ),
+      actionsIconTheme: IconThemeData(
+        color: fgColor,
+        size: style.iconSize,
+      ),
     );
   }
 }

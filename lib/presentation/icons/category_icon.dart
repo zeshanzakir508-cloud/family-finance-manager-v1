@@ -1,13 +1,9 @@
 // lib/presentation/icons/category_icon.dart
 
-/// An enumeration of all icons used throughout the application.
+/// An enumeration of all category icons used throughout the application.
 ///
-/// This enum serves as an abstraction layer between the presentation logic
-/// and the underlying icon implementation (Material, Cupertino, etc.).
-/// It allows the app to switch icon packages without changing business logic.
-///
-/// Each entry represents a semantic icon that can be mapped to platform-specific
-/// [IconData] by a separate mapper.
+/// This enum serves as the semantic layer for category icons, providing
+/// type-safe references that can be mapped to platform-specific icons.
 ///
 /// Example:
 /// ```dart

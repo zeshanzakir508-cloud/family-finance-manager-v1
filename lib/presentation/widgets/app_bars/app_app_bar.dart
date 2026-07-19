@@ -126,3 +126,87 @@ class AppAppBar extends StatelessWidget
     throw UnimplementedError();
   }
 }
+return AppBar(
+  title: subtitle == null
+      ? Text(
+          title,
+          style: style.titleStyle,
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+        )
+      : Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              title,
+              style: style.titleStyle,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+            Text(
+              subtitle!,
+              style: style.subtitleStyle,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ],
+        ),
+
+  leading: leading,
+
+  actions: actions
+      ?.map(
+        (action) => Padding(
+          padding: EdgeInsets.only(
+            right: style.actionsSpacing,
+          ),
+          child: IconTheme(
+            data: IconThemeData(
+              size: style.iconSize,
+              color: foregroundColor ?? colors.foreground,
+            ),
+            child: action,
+          ),
+        ),
+      )
+      .toList(),
+
+  bottom: bottom,
+
+  flexibleSpace: flexibleSpace,
+
+  centerTitle: centerTitle,
+
+  automaticallyImplyLeading: automaticallyImplyLeading,
+
+  toolbarHeight: toolbarHeight ?? style.toolbarHeight,
+
+  leadingWidth: style.leadingWidth,
+
+  titleSpacing: style.titleSpacing,
+
+  backgroundColor: backgroundColor ?? colors.background,
+
+  foregroundColor: foregroundColor ?? colors.foreground,
+
+  elevation: elevation ?? style.elevation,
+
+  shape: shape ?? style.shape,
+
+  iconTheme: IconThemeData(
+    size: style.iconSize,
+    color: foregroundColor ?? colors.foreground,
+  ),
+
+  actionsIconTheme: IconThemeData(
+    size: style.iconSize,
+    color: foregroundColor ?? colors.foreground,
+  ),
+
+  titleTextStyle: style.titleStyle,
+
+  toolbarTextStyle: style.subtitleStyle,
+
+  scrolledUnderElevation: elevation ?? style.elevation,
+);

@@ -56,6 +56,9 @@ class AppDialog extends StatelessWidget {
   /// Whether to show the cancel button.
   final bool showCancelButton;
 
+  /// Whether the dialog can be dismissed by tapping outside.
+  final bool barrierDismissible;
+
   /// Custom icon color override.
   final Color? iconColor;
 
@@ -84,6 +87,7 @@ class AppDialog extends StatelessWidget {
     this.onConfirm,
     this.onCancel,
     this.showCancelButton = false,
+    this.barrierDismissible = true,
     this.iconColor,
     this.backgroundColor,
     this.contentPadding,

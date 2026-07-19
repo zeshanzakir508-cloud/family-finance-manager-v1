@@ -17,6 +17,9 @@ export 'app_navigation_rail.dart';
 export 'app_navigation_drawer.dart';
 export 'app_tab_bar.dart';
 export 'app_breadcrumb.dart';
+export 'app_bar.dart';
+export 'page_header.dart';
+export 'bottom_navigation.dart';
 
 // ---------------------------------------------------------------------------
 // Enums

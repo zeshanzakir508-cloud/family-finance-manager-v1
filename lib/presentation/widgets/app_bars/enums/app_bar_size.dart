@@ -10,5 +10,17 @@ enum AppBarSize {
   medium,
 
   /// Large app bar.
-  large,
+  large;
+
+  /// Default toolbar height for this app bar size.
+  double get toolbarHeight {
+    switch (this) {
+      case AppBarSize.compact:
+        return 48;
+      case AppBarSize.medium:
+        return 56;
+      case AppBarSize.large:
+        return 64;
+    }
+  }
 }

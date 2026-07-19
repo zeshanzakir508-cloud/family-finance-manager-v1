@@ -127,13 +127,12 @@ class AppAppBar extends StatelessWidget
   }
 }
 return AppBar(
-  title: subtitle == null
-      ? Text(
-          title,
-          style: style.titleStyle,
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-        )
+ title: _AppBarTitle(
+  title: title,
+  subtitle: subtitle,
+  titleStyle: style.titleStyle,
+  subtitleStyle: style.subtitleStyle,
+),
       : Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -210,3 +209,49 @@ return AppBar(
 
   scrolledUnderElevation: elevation ?? style.elevation,
 );
+/// Internal title widget used by [AppAppBar].
+class _AppBarTitle extends StatelessWidget {
+  const _AppBarTitle({
+    required this.title,
+    this.subtitle,
+    required this.titleStyle,
+    required this.subtitleStyle,
+  });
+
+  final String title;
+  final String? subtitle;
+
+  final TextStyle titleStyle;
+  final TextStyle subtitleStyle;
+
+  @override
+  Widget build(BuildContext context) {
+    if (subtitle == null || subtitle!.isEmpty) {
+      return Text(
+        title,
+        style: titleStyle,
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
+      );
+    }
+
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          title,
+          style: titleStyle,
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+        ),
+        Text(
+          subtitle!,
+          style: subtitleStyle,
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+        ),
+      ],
+    );
+  }
+}

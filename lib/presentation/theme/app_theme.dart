@@ -2,8 +2,8 @@
 
 import 'package:flutter/material.dart';
 
+import 'dark_theme.dart';
 import 'light_theme.dart';
-import 'theme_constants.dart';
 
 /// The application's main theme configuration entry point.
 ///
@@ -30,5 +30,5 @@ abstract final class AppTheme {
   ///
   /// This theme uses a dark color scheme optimized for low-light environments,
   /// reducing eye strain while maintaining readability and visual hierarchy.
-  static ThemeData get dark => LightTheme.buildDark(); // or DarkTheme.build()
+  static ThemeData get dark => DarkTheme.build();
 }

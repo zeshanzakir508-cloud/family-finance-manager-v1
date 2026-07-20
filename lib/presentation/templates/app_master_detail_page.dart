@@ -106,3 +106,34 @@ class AppMasterDetailPage extends StatelessWidget {
                   right: BorderSide(
                     color: colorScheme.outlineVariant,
                     width: 1,
+                  ),
+                ),
+              ),
+              child: master,
+            ),
+            Expanded(
+              child: detail,
+            ),
+          ],
+        );
+      },
+    );
+
+    final actions = <Widget>[];
+    if (trailing != null) {
+      actions.add(trailing!);
+    }
+
+    return AppPage(
+      child: body,
+      title: title,
+      subtitle: subtitle,
+      leading: leading,
+      actions: actions.isNotEmpty ? actions : null,
+      variant: variant,
+      density: density,
+      scrollBehavior: PageScrollBehavior.none,
+      appBar: appBar,
+    );
+  }
+}

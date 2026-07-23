@@ -103,4 +103,111 @@ class _InviteMembersPageState extends ConsumerState<InviteMembersPage> {
                   ),
                   keyboardType: TextInputType.emailAddress,
                 ),
-                const SizedBox(height
+                const SizedBox(height: 12),
+                TextField(
+                  controller: _nameController,
+                  decoration: const InputDecoration(
+                    labelText: 'Name (Optional)',
+                    hintText: 'Enter member name',
+                    prefixIcon: Icon(Icons.person),
+                    border: OutlineInputBorder(),
+                  ),
+                ),
+                const SizedBox(height: 12),
+                DropdownButtonFormField<FamilyRole>(
+                  value: _selectedRole,
+                  decoration: const InputDecoration(
+                    labelText: 'Role',
+                    prefixIcon: Icon(Icons.admin_panel_settings),
+                    border: OutlineInputBorder(),
+                  ),
+                  items: FamilyRole.values.where((r) => r != FamilyRole.owner).map((role) {
+                    return DropdownMenuItem(
+                      value: role,
+                      child: Text(role.displayName),
+                    );
+                  }).toList(),
+                  onChanged: (value) {
+                    if (value != null) {
+                      setState(() => _selectedRole = value);
+                    }
+                  },
+                ),
+                const SizedBox(height: 16),
+                SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    onPressed: _isLoading ? null : _sendInvite,
+                    style: ElevatedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(vertical: 14),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
+                    child: _isLoading
+                        ? const CircularProgressIndicator()
+                        : const Text('Send Invitation'),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const Divider(),
+          // Invitations list
+          Expanded(
+            child: state.isLoading
+                ? const Center(child: CircularProgressIndicator())
+                : invitations.isEmpty
+                    ? const Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(Icons.send, size: 48, color: Colors.grey),
+                            SizedBox(height: 8),
+                            Text(
+                              'No invitations sent yet',
+                              style: TextStyle(color: Colors.grey),
+                            ),
+                          ],
+                        ),
+                      )
+                    : ListView.builder(
+                        itemCount: invitations.length,
+                        itemBuilder: (context, index) {
+                          final invite = invitations[index];
+                          return InviteCard(
+                            invitation: invite,
+                            onCancel: () async {
+                              try {
+                                final repo = ref.read(familyRepositoryProvider);
+                                await repo.cancelInvitation(invite.id);
+                                ref.read(familyNotifierProvider.notifier).refresh();
+                              } catch (e) {
+                                // Handle error
+                              }
+                            },
+                            onResend: () async {
+                              try {
+                                final repo = ref.read(familyRepositoryProvider);
+                                await repo.resendInvitation(invite.id);
+                                ref.read(familyNotifierProvider.notifier).refresh();
+                                if (mounted) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                      content: Text('Invitation resent successfully'),
+                                    ),
+                                  );
+                                }
+                              } catch (e) {
+                                // Handle error
+                              }
+                            },
+                          );
+                        },
+                      ),
+          ),
+        ],
+      ),
+    );
+  }
+}

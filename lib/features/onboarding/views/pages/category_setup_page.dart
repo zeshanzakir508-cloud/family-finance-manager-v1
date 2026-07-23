@@ -77,4 +77,113 @@ class _CategorySetupPageState extends ConsumerState<CategorySetupPage> {
   }
 
   @override
-  Widget build(BuildContext context, WidgetRef ref)
+  Widget build(BuildContext context, WidgetRef ref) {
+    return SingleChildScrollView(
+      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const SizedBox(height: 12),
+          const Text(
+            'Choose Categories',
+            style: TextStyle(
+              fontSize: 28,
+              fontWeight: FontWeight.bold,
+              color: Colors.pink,
+            ),
+          ),
+          const SizedBox(height: 8),
+          const Text(
+            'Select categories that matter to your family.',
+            style: TextStyle(
+              fontSize: 16,
+              color: Colors.grey,
+            ),
+          ),
+          const SizedBox(height: 24),
+          // Categories grid
+          CategoryPreviewSection(
+            categories: _categories,
+            onCategoryTapped: _toggleCategory,
+          ),
+          const SizedBox(height: 16),
+          // Info text
+          Container(
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: Colors.pink.shade50,
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: Row(
+              children: [
+                Icon(Icons.info_outline, color: Colors.pink.shade700),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Text(
+                    'Select at least one category to continue.',
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: Colors.pink.shade700,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 16),
+          // Action buttons
+          if (!_isCategorySetUp) ...[
+            Row(
+              children: [
+                Expanded(
+                  child: ElevatedButton(
+                    onPressed: _categories.any((cat) => cat.selected)
+                        ? _saveCategories
+                        : null,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.pink,
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
+                    child: const Text('Continue'),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 12),
+            TextButton(
+              onPressed: _skipCategories,
+              child: const Text('Skip this step'),
+            ),
+          ] else ...[
+            Container(
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: Colors.pink.shade50,
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Row(
+                children: [
+                  const Icon(Icons.check_circle, color: Colors.pink),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Text(
+                      'Selected ${_categories.where((cat) => cat.selected).length} categories!',
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+          const SizedBox(height: 16),
+        ],
+      ),
+    );
+  }
+}

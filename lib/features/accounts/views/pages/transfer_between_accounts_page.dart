@@ -136,4 +136,116 @@ class _TransferBetweenAccountsPageState
                       accounts: accounts,
                       selectedAccount: _toAccount,
                       onChanged: (account) {
-                        set
+                        setState(() => _toAccount = account);
+                      },
+                      excludeId: _fromAccount?.id,
+                    ),
+                    const SizedBox(height: 16),
+                    // Amount
+                    TextFormField(
+                      controller: _amountController,
+                      decoration: const InputDecoration(
+                        labelText: 'Amount',
+                        hintText: '0.00',
+                        prefixIcon: Icon(Icons.attach_money),
+                        border: OutlineInputBorder(),
+                      ),
+                      keyboardType: TextInputType.number,
+                      validator: (value) {
+                        final actions = ref.read(accountActionsProvider);
+                        return actions.validateTransferAmount(value);
+                      },
+                    ),
+                    const SizedBox(height: 16),
+                    // Note
+                    TextFormField(
+                      controller: _noteController,
+                      decoration: const InputDecoration(
+                        labelText: 'Note (Optional)',
+                        hintText: 'Add a note for this transfer',
+                        prefixIcon: Icon(Icons.note),
+                        border: OutlineInputBorder(),
+                      ),
+                      maxLines: 2,
+                    ),
+                    const SizedBox(height: 16),
+                    // Date
+                    ListTile(
+                      leading: const Icon(Icons.calendar_today),
+                      title: Text(_formatDate(_selectedDate)),
+                      onTap: _selectDate,
+                      tileColor: Colors.grey.shade50,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
+                    const Spacer(),
+                    // Preview
+                    if (_fromAccount != null && _toAccount != null)
+                      Container(
+                        padding: const EdgeInsets.all(16),
+                        decoration: BoxDecoration(
+                          color: Colors.green.shade50,
+                          borderRadius: BorderRadius.circular(12),
+                          border: Border.all(color: Colors.green.shade200),
+                        ),
+                        child: Column(
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  _fromAccount!.name,
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                                const Icon(Icons.arrow_forward),
+                                Text(
+                                  _toAccount!.name,
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const Divider(),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                const Text('Amount:'),
+                                Text(
+                                  '\$${_amountController.text.isEmpty ? '0.00' : _amountController.text}',
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                  ],
+                ),
+              ),
+            ),
+    );
+  }
+
+  Future<void> _selectDate() async {
+    final date = await showDatePicker(
+      context: context,
+      initialDate: _selectedDate,
+      firstDate: DateTime(2020),
+      lastDate: DateTime.now(),
+    );
+    if (date != null) {
+      setState(() => _selectedDate = date);
+    }
+  }
+
+  String _formatDate(DateTime date) {
+    return '${date.day}/${date.month}/${date.year}';
+  }
+}

@@ -121,4 +121,22 @@ class _RecurringTransactionsPageState extends ConsumerState<RecurringTransaction
         isActive: !transaction.isActive,
       );
       if (mounted) {
-        ScaffoldMessenger.of(context).showSn
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              transaction.isActive 
+                  ? 'Recurring transaction paused' 
+                  : 'Recurring transaction resumed',
+            ),
+          ),
+        );
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Failed to update: $e')),
+        );
+      }
+    }
+  }
+}
